@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Studio Ghibli Carousel</title>
+  <style>
+
+  /* Carousel */
+    * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+  background-image: url('assets/bg-11.png');
+  background-size: container;        /* Cover the full body */
+  background-repeat: no-repeat;
+  background-attachment: fixed;  /* Optional: keeps image fixed on scroll */
+  background-position: center;
+  font-family: sans-serif;
+  padding: 20px;
+  color: #f1f9ea;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(188, 174, 174, 0.5);  /* adjust opacity */
+  z-index: -1;                          /* sit behind content */
+}
+
+  .carousel {
+    max-width: 90%;
+    margin: auto;
+    position: relative;
+  }
+
+  .slides {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+  .slide {
+    width: 100%;
+    display: none;
+    position: relative;
+  }
+
+ 
+  .poster {
+    width: 100%;
+    height: auto;
+    min-height: 300px;
+    max-height: 600px;
+    object-fit: cover;
+  }
+
+  .caption {
+    position: absolute;
+    bottom: 5%;
+    left: 5%;
+    background: rgba(33, 31, 25, 0.7);
+    padding: 1em;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center;
+    text-align: center; */
+    z-index: 2;
+  
+    width: 50%;              
+    max-width: 400px;
+    height: auto;
+  }
+
+  .caption h2 {
+    color: #a8f1a4;
+    font-size: 2.5rem;
+  }
+
+  .caption p {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #94e7f2;
+  }
+
+  .trailer {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    width: 25vw;              
+    max-width: 500px;         
+    min-width: 150px;         
+    
+    border-radius: 100px;
+    box-shadow: 0 0 20px #49ed3a;
+    transition: transform 0.3s ease;
+    z-index: 2;
+  }
+
+
+  .trailer:hover {
+    transform: scale(1.1);
+  }
+
+  @media (max-width: 768px) {
+    .trailer {
+      width: 40vw;
+      bottom: 10px;
+      right: 10px;
+    }
+
+    .caption {
+      bottom: 10px;
+      left: 10px;
+      padding: 10px;
+    }
+
+    .caption h2 {
+      font-size: 1.2rem;
+    }
+
+    .caption p {
+      font-size: 0.9rem;
+    }
+
+    .poster {
+        height: 300px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .trailer {
+      display: none;
+    }
+
+    .caption {
+      position: absolute;
+      width: 60%;
+      max-width: 300px;;
+      height: auto;
+      display: block;
+      bottom: 10px;
+      left: 10px;
+      padding: 10px;
+    }
+
+    .caption h2 {
+      font-size: 1.1rem;
+    }
+
+    .caption p {
+      font-size: 0.7rem;
+    }
+
+    .poster {
+        display: flex;
+        flex-direction: column;
+        height: 300px;
+    }
+  }
+
+
+  
+.slides .slide {
+  display: none;
+  position: relative;
+}
+.slides .slide.active {
+  display: block;
+}
+
+
+.nav-button {
+  position: absolute;
+  top: 50%;
+  width: 50px;
+  height: 50px;
+  transform: translateY(-50%);
+  background: rgba(20, 20, 20, 0.6);
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  z-index: 3;
+  border-radius: 50%;
+}
+
+.nav-button.prev {
+  left: 10px;
+}
+.nav-button.next {
+  right: 10px;
+}
+
+.nav-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+/* Carousel */
+
+/* Form Validation */
+#registration {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 40px;
+  background-image: url("assets/bg-8.webp");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(0, 76, 122, 0.6); /* optional fallback */
+  border-radius: 10px;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+
+/* Form element */
+#registrationform {
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;     /* Align labels and inputs to the left */
+  gap: 10px;                   /* Space between elements */
+  max-width: 500px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(214, 228, 247, 0.2);
+}
+
+/* Headline */
+#registrationform h2 {
+  align-self: center;          /* Center the headline only */
+}
+
+/* Input fields, select, textarea */
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: none;
+  box-sizing: border-box;
+}
+
+/* Radio buttons */
+.gender-options {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+/* Submit button */
+button {
+  
+  padding: 10px 20px;
+  border: none;
+  background-color: #32e0f0;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #3cc22e;
+}
+
+
+.error {
+  color: rgb(168, 240, 235);
+  font-size: 0.9em;
+}  
+
+/* Navigation bar*/
+#mainNav {
+  position: sticky;
+  background-color: rgba(20, 20, 20, 0.8);
+  z-index: 10;
+  width: 90%;
+  margin: 0 auto;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0 0 10px 10px;
+}
+
+#mainNav ul {
+  list-style: none;
+  
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  padding: 0;
+}
+
+#mainNav ul li a {
+  color: rgb(167, 240, 224);
+  
+  text-decoration: none;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 1.1rem;
+  padding: 10px;
+}
+
+#mainNav img {
+  display: none; /* hidden by default */
+  width: 70px;
+  cursor: pointer;
+}
+
+.menu-icon{
+  display: none;
+  width: 40px;
+  cursor: pointer;
+}
+
+/* MOBILE VIEW */
+@media (max-width: 600px) {
+  #mainNav {
+    flex-direction: column;
+    align-items: center;
+    
+    
+  }
+
+  #mainNav img {
+    display: block;
+    top:2px;
+    margin-bottom: 10px;
+  }
+
+  #navLinks {
+    display: none;
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    width: 100%;
+    transition: all 0.3s ease;
+  }
+
+  #navLinks.show {
+    display: flex;
+    
+  }
+
+  #mainNav ul li {
+    width: auto;
+  }
+
+  #mainNav ul li a {
+    display: block;
+    padding: 10px 0;
+    /* border-bottom: 1px solid #555; */
+  }
+
+  #mainNav ul {
+    flex-direction: column;
+    align-items: center;
+    display: none;
+    gap: 15px;
+  }
+
+  #mainNav ul.show {
+    display: flex;
+  }
+
+  .menu-icon {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}}
+/*Navigation bar*/
+
+/* Search and buy */
+/* Shopping area container */
+/* Shopping area container */
+#shoppingArea {
+  min-height: 500px;
+  position: relative;
+  transition: all 0.4s ease;
+}
+
+/* Base style for all full-page shopping sections */
+.shopping-section {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background-color: white;
+  color: #222;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+/* Hide section when not in view */
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+/* Product section (special: scrollable horizontally) */
+#productSection {
+  /* white-space: nowrap; */
+  
+  overflow-y: hidden;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Search bar */
+#searchInput {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 50%;
+}
+
+/* Product list container */
+.scrollable-container {
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Product card style */
+.product-card {
+  display: inline-block;
+  width: 400px;
+  max-height: 400px;
+  margin-right: 15px;
+  background: #fff;
+  color: #222;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  text-align: center;
+  overflow: hidden;
+}
+
+.product-card p {
+  font-size: 0.9rem;
+  line-height: 1.3;
+  
+}
+
+/* Checkout styling */
+#checkoutSection {
+  background: linear-gradient(to right, #f3f9ff, #d7f1e1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.15);
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+}
+
+#checkoutSection h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #333366;
+}
+
+#cartItems {
+  width: 80%;
+  max-width: 600px;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+#cartItems li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  font-size: 1.1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+#proceedToBuyBtn {
+  padding: 12px 24px;
+  background-color: #00ccff;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+#proceedToBuyBtn:hover {
+  background-color: #0099cc;
+}
+
+/* Purchase form styling */
+#purchaseForm,
+#confirmation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+
+#purchaseForm h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #5b3366;
+}
+
+#purchaseForm label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+#purchaseForm input,
+#purchaseForm textarea,
+#purchaseForm select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+  box-sizing: border-box;
+}
+
+#confirmPurchaseBtn {
+  display: block;
+  margin: 20px auto 0;
+  padding: 12px 24px;
+  background-color: #00cc99;
+  color: #fff;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+#confirmPurchaseBtn:hover {
+  background-color: #009977;
+}
+
+/* Confirmation styling */
+#confirmation {
+  background: linear-gradient(to right, #e0f7fa, #fffbe6);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  text-align: center;
+}
+
+#confirmation h2 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #336699;
+}
+
+#confirmation p {
+  font-size: 1.1rem;
+  margin: 10px 0;
+}
+
+#confirmation span {
+  font-weight: bold;
+  color: #00695c;
+}
+
+#backToProductsBtn {
+  margin-top: 25px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  background-color: #3399ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+#backToProductsBtn:hover {
+  background-color: #1976d2;
+}
+
+#cartNotification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #ffcc00;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+
+/* Search and buy*/
+
+  </style>
+
+</head>
+<body>
+  <div class="carousel" id="carousel">
+    <div class="slides" id="slides">
+      <div class="slide card">
+        <img class="poster" src="assets/howlscastle.jpg" alt="Movie 1">
+        <div class="caption">
+          <h2>How's Moving Castle</h2>
+          <p>Family is what you make of it</p>
+        </div>
+        <video class="trailer" src="assets/howl-trailer.mp4" controls autoplay muted loop></video>
+      </div>
+      <div class="slide card">
+        <img class="poster" src="assets/spiritedaway.jpg" alt="Movie 2">
+        <div class="caption">
+          <h2>Spirited Away</h2>
+          <p>A journey to the spirit world.</p>
+        </div>
+        <video class="trailer" src="assets/spirited-away-trailer.mp4" controls autoplay muted loop> </video>
+      </div>
+      <div class="slide card">
+        <img class="poster" src="assets/kiki.webp" alt="Movie 2">
+        <div class="caption">
+          <h2>Kiki's Delivery Service</h2>
+          <p>Growing up can be magical</p>
+        </div>
+        <video class="trailer" src="assets/kiki-trailer.mp4" controls autoplay muted loop></video>
+      </div>
+      <div class="slide card">
+        <img class="poster" src="assets/totoro.jpg" alt="Movie 2">
+        <div class="caption">
+          <h2>My Neighbor Totoro</h2>
+          <p>Imagination. Joy. Resilience</p>
+        </div>
+        <video class="trailer" src="assets/totoro-trailer.mp4" controls autoplay muted loop></video>
+      </div>
+      <div class="slide card">
+        <img class="poster" src="assets/arrietty.webp" alt="Movie 2">
+        <div class="caption">
+          <h2>Arrietty</h2>
+          <p>A "little" girl's BIG life</p>
+        </div>
+        <video class="trailer" src="assets/arrietty-trailer.mp4" controls autoplay muted loop></video>
+      </div>
+       
+    </div>
+  
+    
+    <button class="nav-button prev" id="prev">&#10094;</button>
+    <button class="nav-button next" id="next">&#10095;</button>
+  </div> 
+
+  <nav id="mainNav">
+    <img src="assets/menu-icon.png" alt="Menu" id="menuToggle" class="menu-icon"/>
+    <ul id="navLinks">
+      <li><a href="#registration">Visit</a></li>
+      <li><a href="#about">Shop With Us</a></li>
+      <li><a href="#tickets">Tickets</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav><br><br><br>
+
+
+
+  <section id="shoppingArea">
+    <div id="productSection" class="shopping-section">
+      <input type="text" id="searchInput" placeholder="Search merchandise..." />
+      <div id="cartNotification" class="hidden">
+        <button id="checkoutBtn">Checkout</button>
+      </div>
+      <div id="productList" class="scrollable-container"></div>
+    </div>
+  
+    <div id="checkoutSection" class="shopping-section hidden">
+      <h2>Your Cart</h2>
+      <ul id="cartItems"></ul>
+      <button id="proceedToBuyBtn">Proceed to Buy</button>
+    </div>
+  
+    <div id="purchaseForm" class="shopping-section hidden">
+      <h2>Confirm Your Purchase</h2>
+      <form id="orderForm">
+        <label>Name: <input type="text" id="custName" required></label><br>
+        <label>Email: <input type="email" id="custEmail" required></label><br>
+        <label>Address: <textarea id="custAddress" required></textarea></label><br>
+        <label>Payment Method:
+          <select id="paymentMethod">
+            <option value="">Select</option>
+            <option value="credit">Credit Card</option>
+            <option value="debit">Debit Card</option>
+          </select>
+        </label><br>
+        <label>Card Number: <input type="text" id="cardNumber" required></label><br>
+        <label>Expiry: <input type="text" id="cardExpiry" placeholder="MM/YY" required></label><br>
+        <label>CVV: <input type="text" id="cardCVV" required></label><br>
+        <button type="submit" id="confirmPurchaseBtn">Confirm Purchase</button>
+      </form>
+    </div>
+  
+    <div id="confirmation" class="shopping-section hidden">
+      <h2>Order Confirmed!</h2>
+      <p>Thank you, <span id="confirmName"></span>!</p>
+      <p>Your order of <span id="confirmCount"></span> items totaling <strong>$<span id="confirmTotal"></span></strong> will be delivered to:</p>
+      <p id="confirmAddress"></p>
+      <p>Expect your package in 3–4 working days.</p>
+      <button type="submit" id="backToProductsBtn">Back to Shopping</button>
+      
+    </div>
+
+  </section><br><br>
+  
+  
+
+  <section id="registration">
+    <form id="registrationform">
+      <h2>Visit us at Ghibli Park</h2><br>
+  
+      <label for="date-of-visit">When would you like to visit us?</label>
+      <input type="date" id="date-of-visit" name="date-of-visit">
+      <span class="error" id="visitDateError"></span><br>
+
+      <label for="no-of-visitors">How many are coming?</label>
+      <select name="no-of-visitors" id="no-of-visitors">
+        <option value="">---Select---</option>
+        <option value="just-me">Just me</option>
+        <option value="me-and-friend">My friend and I</option>
+        <option value="me-and-some">Some of my friends and I (3 - 4)</option>
+        <option value="me-and-family">My family and I (4 or more)</option>
+      </select>
+      <span class="error" id="visitorsError"></span><br>
+      
+      <label for="name">Your Full Name:</label>
+      <input type="text" id="name" name="name">
+      <span class="error" id="nameError"></span><br>
+  
+      <label for="email">Your Email Address:</label>
+      <input type="email" id="email" name="email">
+      <span class="error" id="emailError"></span><br>
+  
+      <label for="dob">Date of Birth:</label>
+      <input type="date" id="dob" name="dob">
+      <span class="error" id="dobError"></span><br>
+  
+      <label>Gender:</label>
+      <div class="gender-options">
+        <label><input type="radio" name="gender" value="male"> Male</label>
+        <label><input type="radio" name="gender" value="female"> Female</label>
+      </div>
+      <span class="error" id="genderError"></span><br>
+  
+      <label for="ticket">Ticket Type:</label>
+      <select id="ticket" name="ticket">
+        <option value="">--Select--</option>
+        <option value="standard">Standard</option>
+        <option value="guided">Guided Tour</option>
+        <option value="family">Family Package (Guided tour included)</option>
+      </select>
+      <span class="error" id="ticketError"></span><br>
+  
+      <label for="comments">Additional Comments:</label>
+      <textarea id="comments" name="comments" rows="4"></textarea><br>
+  
+      <button type="submit">Register</button>
+    </form>
+  </section>
+
+ 
+  
+
+  
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const nextBtn = document.getElementById('next');
+    const prevBtn = document.getElementById('prev');
+    const carousel = document.getElementById('carousel');
+
+    let currentSlide = 0;
+    let slideInterval;
+
+    function showSlide(index) {
+      slides.forEach(slide => slide.classList.remove('active'));
+      slides[index].classList.add('active');
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function startAutoSlide() {
+      slideInterval = setInterval(nextSlide, 4000);
+    }
+
+    function stopAutoSlide() {
+      clearInterval(slideInterval);
+    }
+
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+
+    carousel.addEventListener('mouseenter', stopAutoSlide);
+    carousel.addEventListener('mouseleave', startAutoSlide);
+
+    showSlide(currentSlide);
+    startAutoSlide();
+
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("show");
+    });
+
+    document.getElementById("registrationform").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      // Clear previous errors
+      document.querySelectorAll(".error").forEach(el => el.textContent = "");
+
+      let isValid = true;
+
+      // Name
+      const name = document.getElementById("name").value.trim();
+      if (name === "") {
+        document.getElementById("nameError").innerText = "Name is required.";
+        isValid = false;
+      }
+
+      // Email
+      const email = document.getElementById("email").value.trim();
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailPattern.test(email)) {
+        document.getElementById("emailError").textContent = "Enter a valid email.";
+        isValid = false;
+      }
+
+      // Date of Birth
+      const dob = document.getElementById("dob").value;
+      if (!dob) {
+        document.getElementById("dobError").textContent = "Select your birth date.";
+        isValid = false;
+      }
+
+      // Gender
+      const genderSelected = document.querySelector('input[name="gender"]:checked');
+      if (!genderSelected) {
+        document.getElementById("genderError").textContent = "Please select your gender.";
+        isValid = false;
+      }
+
+      // Ticket
+      const ticket = document.getElementById("ticket").value;
+      if (ticket === "") {
+        document.getElementById("ticketError").textContent = "Choose a ticket type.";
+        isValid = false;
+      }
+
+      // No. of Visitors //
+      const noOfVisitors = document.getElementById("no-of-visitors").value;
+      if(noOfVisitors === ""){
+        document.getElementById("visitorsError").textContent = "Select the number of visitors.";
+        isValid = false;
+      }
+
+      // Date of Visit
+      const visitDate = document.getElementById("date-of-visit").value;
+      if (!visitDate) {
+        document.getElementById("visitDateError").textContent = "Select your visit date.";
+        isValid = false;
+      }
+
+      if (isValid) {
+        alert("Form submitted successfully!");
+        // You could now send the data to a server using fetch/AJAX here
+      }
+    });
+
+    
+
+// Shopping section  
+  
+let products = [];
+let cart = JSON.parse(localStorage.getItem("ghibliCart")) || [];
+
+// Fetch products from JSON file
+
+fetch("ghibli_merchandise.json")
+  .then(res => res.json())
+  .then(data => {
+    products = data;
+    displayProducts(products);
+    updateCart();
+  });
+
+function displayProducts(productList) {
+  const container = document.getElementById("productList");
+  container.innerHTML = "";
+
+  productList.forEach(product => {
+    const card = document.createElement("div");
+    card.className = "product-card";
+    card.innerHTML = `
+      <img src="assets/${product.id}.jpg" alt="${product.name}" width="150">
+      <h3>${product.name}</h3>
+      <p>${product.description}</p>
+      <p><strong>$${product.price}</strong></p>
+      <button onclick="addToCart('${product.id}')">Add to Cart</button>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function addToCart(id) {
+  const item = products.find(p => p.id === id);
+  const existing = cart.find(c => c.id === id);
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({ ...item, quantity: 1 });
+  }
+
+  updateCart();
+  document.getElementById("cartNotification").classList.remove("hidden");
+  localStorage.setItem("ghibliCart", JSON.stringify(cart));
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(item => item.id !== id);
+  updateCart();
+  localStorage.setItem("ghibliCart", JSON.stringify(cart));
+
+  if (cart.length === 0) {
+    document.getElementById("cartNotification").classList.add("hidden");
+  }
+} 
+
+
+
+function updateCart() {
+  /* const list = document.getElementById("cartItems");
+  list.innerHTML = cart.map(i => <li>${i.name} - $${i.price}</li>).join(""); */
+  const list = document.getElementById("cartItems");
+  list.innerHTML = cart.map(i => `
+    <li>
+      ${i.name} - $${i.price} </li>
+  `).join("");
+}
+
+document.getElementById("searchInput").addEventListener("input", function () {
+  const query = this.value.toLowerCase();
+  const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+  displayProducts(filtered);
+});
+
+document.getElementById("checkoutBtn").addEventListener("click", () => {
+  showSection("checkoutSection");
+});
+
+document.getElementById("proceedToBuyBtn").addEventListener("click", () => {
+  showSection("purchaseForm");
+});
+
+document.getElementById("orderForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const name = document.getElementById("custName").value;
+  const address = document.getElementById("custAddress").value;
+  const total = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
+
+  document.getElementById("purchaseForm").classList.add("hidden");
+  document.getElementById("confirmation").classList.remove("hidden");
+
+  document.getElementById("confirmName").textContent = name;
+  document.getElementById("confirmCount").textContent = cart.reduce((sum, i) => sum + i.quantity, 0);
+  document.getElementById("confirmTotal").textContent = total.toFixed(2);
+  document.getElementById("confirmAddress").textContent = address;
+
+  localStorage.removeItem("ghibliCart");
+});
+
+function showSection(sectionId) {
+  const sections = ["productSection", "checkoutSection", "purchaseForm", "confirmation"];
+  sections.forEach(id => {
+    document.getElementById(id).classList.add("hidden");
+  });
+  document.getElementById(sectionId).classList.remove("hidden");
+}
+
+document.getElementById("backToProductsBtn").addEventListener("click", function () {
+  showSection("productSection");
+
+  cart = [];
+  updateCart();
+  localStorage.removeItem("ghibliCart");
+
+  document.getElementById("cartNotification").classList.add("hidden");
+  document.getElementById("orderForm").reset();
+
+  // Clear search input and reload all products
+  document.getElementById("searchInput").value = "";
+  displayProducts(products);
+  localStorage.removeItem("lastSearch");
+});
+
+</script>
+
+
+</body>
+</html>
